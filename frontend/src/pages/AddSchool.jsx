@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import Input from "@mui/material/Input";
 import { useForm } from "react-hook-form";
 import { FaSchool } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const AddSchool = () => {
     const { register, handleSubmit, formState: { errors }, setValue, clearErrors } = useForm();
@@ -28,7 +29,7 @@ const AddSchool = () => {
     }, [register]);
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-2 md:p-6">
-            <div className="bg-white p-8 md:rounded-2xl shadow-lg w-full max-w-lg">
+            <div className="bg-white p-4 md:p-8 md:rounded-2xl shadow-lg w-full max-w-lg">
                 {/* Header */}
                 <div className="flex flex-col items-center mb-6">
                     <FaSchool className="text-indigo-600 text-4xl mb-2" />
@@ -129,6 +130,21 @@ const AddSchool = () => {
                     >
                         Submit
                     </Button>
+
+                     <div className="flex items-center justify-center gap-4 text-indigo-600">
+                                <Link
+                                  to="/schools"
+                                  className="hover:underline"
+                                >
+                                  School
+                                </Link> | 
+                                <Link
+                                  to="/"
+                                  className="hover:underline"
+                                >
+                                  Home
+                                </Link>
+                              </div>
                 </form>
             </div>
         </div>
