@@ -1,5 +1,6 @@
 import { PiCity } from "react-icons/pi";
 import { HiLocationMarker } from "react-icons/hi";
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function SchoolCard({ image, name, address, city }) {
     return (
@@ -7,7 +8,7 @@ export default function SchoolCard({ image, name, address, city }) {
             {/* Image Section */}
             <div className="relative h-48 overflow-hidden">
                 <img
-                    src={image}
+                    src={`${API_URL}${image}`}
                     alt={name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />

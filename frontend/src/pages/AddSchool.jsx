@@ -5,14 +5,36 @@ import Input from "@mui/material/Input";
 import { useForm } from "react-hook-form";
 import { FaSchool } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 const AddSchool = () => {
-    const { register, handleSubmit, formState: { errors }, setValue, clearErrors } = useForm();
+    const { register, handleSubmit, reset, formState: { errors, isSubmitting }, setValue, clearErrors } = useForm();
     const [preview, setPreview] = useState(null);
 
     const onSubmit = async (data) => {
-        console.log(data);
-        alert("School added!");
+        try {
+            const formData = new FormData();
+            for (let key in data) formData.append(key, data[key]);
+            if (data.image && data.image[0]) {
+                formData.append("image", data.image[0]);
+            }
+            const res = await fetch(`${API_URL}/api/add-school`, {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!res.ok) throw new Error("Failed to add school");
+
+            const result = await res.json();
+            reset();
+            setPreview(null);
+            console.log("School added:", result);
+            toast.success("School added successfully!");
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Something went wrong!");
+        }
     };
 
     const handleImageChange = (e) => {
@@ -126,25 +148,26 @@ const AddSchool = () => {
                         type="submit"
                         variant="contained"
                         fullWidth
+                        disabled={isSubmitting}
                         className="!bg-indigo-600 hover:!bg-indigo-700 !py-3 !rounded-xl !text-lg normal-case"
                     >
-                        Submit
+                        {isSubmitting ? "Submitting..." : "Submit"}
                     </Button>
 
-                     <div className="flex items-center justify-center gap-4 text-indigo-600">
-                                <Link
-                                  to="/schools"
-                                  className="hover:underline"
-                                >
-                                  School
-                                </Link> | 
-                                <Link
-                                  to="/"
-                                  className="hover:underline"
-                                >
-                                  Home
-                                </Link>
-                              </div>
+                    <div className="flex items-center justify-center gap-4 text-indigo-600">
+                        <Link
+                            to="/schools"
+                            className="hover:underline"
+                        >
+                            School
+                        </Link> |
+                        <Link
+                            to="/"
+                            className="hover:underline"
+                        >
+                            Home
+                        </Link>
+                    </div>
                 </form>
             </div>
         </div>

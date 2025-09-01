@@ -3,8 +3,27 @@ import SchoolCard from "../components/SchoolCard";
 import { Link } from "react-router-dom";
 import { RiAddCircleLine } from "react-icons/ri";
 import { IoMdHome } from "react-icons/io";
+import { useEffect, useState } from "react";
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Schools = () => {
+  const [schools, setSchools] = useState([])
+
+  useEffect(() => {
+    fetchSchools()
+  }, [])
+
+  const fetchSchools = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/schools`);
+      if (!response.ok) throw new Error("Failed to fetch schools");
+      const data = await response.json();
+      setSchools(data);
+    } catch (error) {
+      console.error("Error fetching schools:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
@@ -40,42 +59,19 @@ const Schools = () => {
       {/* Cards Grid */}
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          <SchoolCard
-            image="https://uniformapp.in/admin_area/school_images/La_Martiniere_College_Lucknow_image1_7.jpeg"
-            city="Lucknow"
-            name="La Martiniere College"
-            address="Hazratganj"
-          />
-          <SchoolCard
-            image="https://uniformapp.in/admin_area/school_images/La_Martiniere_College_Lucknow_image1_7.jpeg"
-            city="Lucknow"
-            name="La Martiniere College"
-            address="Hazratganj"
-          />
-          <SchoolCard
-            image="https://uniformapp.in/admin_area/school_images/La_Martiniere_College_Lucknow_image1_7.jpeg"
-            city="Lucknow"
-            name="La Martiniere College"
-            address="Hazratganj"
-          />
-          <SchoolCard
-            image="https://uniformapp.in/admin_area/school_images/La_Martiniere_College_Lucknow_image1_7.jpeg"
-            city="Lucknow"
-            name="La Martiniere College"
-            address="Hazratganj"
-          />
-          <SchoolCard
-            image="https://uniformapp.in/admin_area/school_images/La_Martiniere_College_Lucknow_image1_7.jpeg"
-            city="Lucknow"
-            name="La Martiniere College"
-            address="Hazratganj"
-          />
-          <SchoolCard
-            image="https://uniformapp.in/admin_area/school_images/La_Martiniere_College_Lucknow_image1_7.jpeg"
-            city="Lucknow"
-            name="La Martiniere College"
-            address="Hazratganj"
-          />
+          {
+            schools.length > 0 ? (
+              schools.map((school) => (
+                <SchoolCard key={school.id} image={school.image}
+                  city={school.city}
+                  name={school.name}
+                  address={school.address} />
+              ))
+            ) : (
+              <p className="text-gray-500">No schools available.</p>
+            )
+          }
+
         </div>
       </div>
     </div>
