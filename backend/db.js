@@ -15,3 +15,10 @@ export const getSchoolsFromDB = async ()=>{
 
    return rows;
 }
+
+
+export const addSchoolToDB = async ( name, address, city, state, contact, image, email_id)=>{
+   const sql = "INSERT INTO schools (name, address, city, state, contact, image, email_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+   const [result] = await pool.query(sql, [name, address, city, state, contact, image, email_id]);
+   return result;
+}
