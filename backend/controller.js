@@ -13,7 +13,7 @@ export const getSchools = async (req, res) => {
 export const addSchool = async (req, res) => {
     try {
         const { name, address, city, state, contact, email_id } = req.body;
-        const image = req.file ? `schoolImages/${req.file.filename}` : null;
+        const image = req.file ? `/schoolImages/${req.file.filename}` : null;
 
         if (!name || !address || !city || !state || !contact || !email_id) {
             return res.status(400).json({ message: "Missing required fields" });
